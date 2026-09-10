@@ -3,6 +3,8 @@
 **A murder mystery you play by talking. The game master narrates the whole
 case, and does not know who did it.**
 
+**▶ Play it: https://voice-case--mxcontrolmonito.replit.app**
+
 Built for the [AssemblyAI Voice Agent Hackathon](https://lablab.ai/) on
 [lablab.ai](https://lablab.ai/). MIT licensed.
 
@@ -127,6 +129,11 @@ $ npm test
 ```
 
 ## Run it
+
+It is already running at
+**https://voice-case--mxcontrolmonito.replit.app** — no install, no key.
+
+Locally:
 
 ```bash
 git clone <this repo> && cd voice-case
