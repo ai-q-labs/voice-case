@@ -67,6 +67,13 @@ nudge — never the value you got wrong.
 **Open devtools and look.** The answer is not obfuscated in the bundle. It is
 absent from it.
 
+To be explicit, since this is a public repository: `server/solution.js` is right
+there in the tree and you are welcome to read it. The claim is about what the
+*running page* receives, and about what the *narrating layer* can reach — a
+model handed this codebase minus one file can run the table honestly, and that
+is the property worth having. If you want to play unspoiled, don't open that
+file.
+
 ## Why the intent layer is rule-based
 
 This is the part people push back on, so: it is not about cost.
