@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+*.log
+*.tmp
+.DS_Store
+
+# Probe fixtures: the script ships, the audio it generates does not.
+_fixtures/*.wav
+_fixtures/_*.txt

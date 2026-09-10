@@ -1,0 +1,476 @@
+/* The Glasshouse, 03:40 — wet glass at four in the morning. */
+
+:root {
+  color-scheme: dark;
+
+  --ink: #e8ece7;
+  --ink-dim: #9aa79c;
+  --ink-faint: #67746b;
+
+  --glass: #0d1210;
+  --pane: #131a17;
+  --pane-lit: #18211d;
+  --edge: #26312b;
+
+  --moss: #7fc9a0;
+  --lamp: #e3b96a;
+  --blood: #c9705f;
+
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03), 0 12px 32px rgba(0, 0, 0, 0.5);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 600px at 78% -10%, rgba(127, 201, 160, 0.09), transparent 60%),
+    radial-gradient(700px 400px at 8% 110%, rgba(227, 185, 106, 0.06), transparent 60%),
+    var(--glass);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--moss);
+}
+
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: rgba(127, 201, 160, 0.1);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+/* ---- head --------------------------------------------------------------- */
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 28px clamp(16px, 4vw, 40px) 18px;
+  border-bottom: 1px solid var(--edge);
+}
+
+.head h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(24px, 3.4vw, 34px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.head__sub {
+  margin: 4px 0 0;
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+
+.head__seal {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px;
+  border: 1px solid var(--edge);
+  border-radius: 999px;
+  background: var(--pane);
+  color: var(--ink-dim);
+  font-size: 12.5px;
+}
+
+.seal__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--moss);
+  box-shadow: 0 0 0 4px rgba(127, 201, 160, 0.14);
+}
+
+/* ---- layout ------------------------------------------------------------- */
+
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.95fr);
+  gap: clamp(14px, 2vw, 24px);
+  padding: clamp(14px, 2.4vw, 26px) clamp(16px, 4vw, 40px);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--pane);
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.panel--talk {
+  display: flex;
+  flex-direction: column;
+  min-height: 66vh;
+  padding: 14px;
+}
+
+.panel--notes {
+  padding: 18px;
+  position: sticky;
+  top: 18px;
+}
+
+@media (max-width: 900px) {
+  .panel--notes {
+    position: static;
+  }
+}
+
+/* ---- controls ----------------------------------------------------------- */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--edge);
+}
+
+.mic {
+  font: inherit;
+  font-weight: 600;
+  color: var(--glass);
+  background: var(--moss);
+  border: none;
+  border-radius: 9px;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: filter 120ms ease;
+}
+
+.mic:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.mic:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.mic[data-on="true"] {
+  background: var(--blood);
+}
+
+.status {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status[data-kind="listening"] {
+  color: var(--moss);
+}
+
+.status[data-kind="listening"]::before {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status[data-kind="connecting"] {
+  color: var(--lamp);
+}
+
+.status[data-kind="error"] {
+  color: var(--blood);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(127, 201, 160, 0.5);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 6px rgba(127, 201, 160, 0);
+  }
+}
+
+/* ---- log ---------------------------------------------------------------- */
+
+.log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.line__who {
+  font-size: 10.5px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-top: 5px;
+  text-align: right;
+}
+
+.line__body {
+  margin: 0;
+  padding: 9px 13px;
+  border-radius: 11px;
+  background: var(--pane-lit);
+  border: 1px solid var(--edge);
+}
+
+.line--gm .line__body {
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.68;
+  border-left: 2px solid rgba(127, 201, 160, 0.45);
+}
+
+.line--you .line__who {
+  color: var(--lamp);
+}
+
+.line--you .line__body {
+  background: transparent;
+  border-style: dashed;
+  color: var(--ink-dim);
+}
+
+.heard {
+  margin: 0;
+  min-height: 1.4em;
+  padding: 0 6px;
+  font-size: 13.5px;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.heard[data-state="partial"]::after {
+  content: "…";
+}
+
+.pending {
+  margin: 10px 0 0;
+  padding: 10px 13px;
+  border: 1px solid rgba(227, 185, 106, 0.4);
+  background: rgba(227, 185, 106, 0.08);
+  border-radius: 10px;
+  color: var(--lamp);
+  font-size: 13.5px;
+}
+
+/* ---- entry -------------------------------------------------------------- */
+
+.entry {
+  display: flex;
+  gap: 9px;
+  padding-top: 12px;
+  margin-top: 10px;
+  border-top: 1px solid var(--edge);
+}
+
+.entry__input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  color: var(--ink);
+  background: var(--glass);
+  border: 1px solid var(--edge);
+  border-radius: 9px;
+  padding: 9px 13px;
+}
+
+.entry__input::placeholder {
+  color: var(--ink-faint);
+}
+
+.entry__input:focus-visible,
+.mic:focus-visible,
+.entry__send:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--moss);
+  outline-offset: 2px;
+}
+
+.entry__send {
+  font: inherit;
+  color: var(--ink);
+  background: var(--pane-lit);
+  border: 1px solid var(--edge);
+  border-radius: 9px;
+  padding: 9px 17px;
+  cursor: pointer;
+}
+
+.entry__send:hover {
+  background: var(--edge);
+}
+
+/* ---- notes -------------------------------------------------------------- */
+
+.stats {
+  margin: 0 0 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 1px dotted var(--edge);
+  padding-bottom: 7px;
+}
+
+.stat dt {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.stat dd {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 14.5px;
+  text-align: right;
+}
+
+.notes__title {
+  margin: 0 0 9px;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.notes {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.notes:empty::after {
+  content: "Nothing written down yet.";
+  color: var(--ink-faint);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.note {
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 8px 11px;
+  border-radius: 8px;
+  background: var(--pane-lit);
+  border-left: 2px solid var(--edge);
+}
+
+.note--evidence {
+  border-left-color: var(--moss);
+}
+
+.note--testimony {
+  border-left-color: var(--lamp);
+  color: var(--ink-dim);
+}
+
+/* ---- disclosure --------------------------------------------------------- */
+
+.crib {
+  border-top: 1px solid var(--edge);
+  padding-top: 12px;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+
+.crib summary {
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 600;
+  list-style: none;
+}
+
+.crib summary::before {
+  content: "› ";
+  color: var(--moss);
+  display: inline-block;
+  transition: transform 140ms ease;
+}
+
+.crib[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.crib p {
+  margin: 9px 0 0;
+}
+
+.crib--meta {
+  margin-top: 12px;
+}
+
+/* ---- foot --------------------------------------------------------------- */
+
+.foot {
+  padding: 16px clamp(16px, 4vw, 40px) 28px;
+  border-top: 1px solid var(--edge);
+  color: var(--ink-faint);
+  font-size: 12.5px;
+}
+
+.foot p {
+  margin: 0;
+  max-width: 74ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

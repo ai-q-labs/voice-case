@@ -1,0 +1,21 @@
+{
+  "name": "voice-case",
+  "version": "1.0.0",
+  "description": "A murder mystery you play by talking, narrated by a game master that does not know who did it.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/"
+  },
+  "keywords": [
+    "assemblyai",
+    "voice-agent",
+    "speech-to-text",
+    "murder-mystery",
+    "game"
+  ]
+}

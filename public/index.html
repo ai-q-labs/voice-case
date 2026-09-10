@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Glasshouse, 03:40 — Voice Case</title>
+    <meta
+      name="description"
+      content="A murder mystery you play by talking. The game master narrates it without knowing who did it."
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="head">
+      <div class="head__title">
+        <h1>The Glasshouse, 03:40</h1>
+        <p class="head__sub">
+          Aldermoor Botanical Station &middot; the police arrive at six
+        </p>
+      </div>
+      <div class="head__seal" title="The answer is not in this page.">
+        <span class="seal__dot" aria-hidden="true"></span>
+        <span>The game master does not know who did it</span>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="panel panel--talk" aria-label="Conversation">
+        <div class="bar">
+          <button id="mic" class="mic" data-on="false" type="button">
+            Start listening
+          </button>
+          <span id="status" class="status" data-kind="off">Microphone off</span>
+        </div>
+
+        <div id="log" class="log" role="log" aria-live="polite"></div>
+
+        <p id="heard" class="heard" aria-live="off"></p>
+
+        <p id="pending" class="pending" hidden></p>
+
+        <div class="entry">
+          <input
+            id="entry"
+            class="entry__input"
+            type="text"
+            autocomplete="off"
+            placeholder="…or type it: search the ledger"
+            aria-label="Type what you want to say"
+          />
+          <button id="send" class="entry__send" type="button">Say</button>
+        </div>
+      </section>
+
+      <aside class="panel panel--notes" aria-label="Your notebook">
+        <dl class="stats">
+          <div class="stat">
+            <dt>Where you are</dt>
+            <dd id="phase">Not yet begun</dd>
+          </div>
+          <div class="stat">
+            <dt>Questions left</dt>
+            <dd id="questions">10 / 10</dd>
+          </div>
+          <div class="stat">
+            <dt>Searched</dt>
+            <dd id="found">0 / 7</dd>
+          </div>
+        </dl>
+
+        <h2 class="notes__title">Notebook</h2>
+        <ul id="evidence" class="notes"></ul>
+
+        <details class="crib">
+          <summary>What can I say?</summary>
+          <p><strong>Search</strong> — the ledger, the thermostat, the boots, the syringe, the letter, the keys, the orchid. Free, as many times as you like.</p>
+          <p><strong>Ask</strong> — <em>ask Tobias about the letter</em>. Ten questions, and then they stop talking.</p>
+          <p><strong>Take stock</strong> — <em>notebook</em>, <em>who is here</em>, <em>what is left</em>.</p>
+          <p><strong>Finish it</strong> — <em>I accuse Tobias, by oleander, over authorship</em>, then <em>yes</em>.</p>
+        </details>
+
+        <details class="crib crib--meta">
+          <summary>How is it sealed?</summary>
+          <p>
+            Open the console and try. <code>voiceCase.engine</code> is every
+            method the game master has. None of them returns the culprit,
+            because the culprit is not in this page — there is no
+            <code>solution</code> key in the case file that was downloaded.
+          </p>
+          <p>
+            An accusation is marked by the server, which returns three booleans
+            and a nudge. Watch the Network tab while you guess wrong.
+          </p>
+        </details>
+      </aside>
+    </main>
+
+    <footer class="foot">
+      <p>
+        Speech by
+        <a href="https://www.assemblyai.com/docs/speech-to-text/universal-streaming" rel="noopener">AssemblyAI Universal-Streaming</a>;
+        voice by the browser's own <code>speechSynthesis</code>. No language
+        model is involved in play — see the README for why that is the point.
+      </p>
+    </footer>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
